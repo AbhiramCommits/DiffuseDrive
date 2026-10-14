@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel", "scikit-build-core"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "diffusedrive"
+version = "0.1.0"
+description = "Conditional diffusion model for multi-modal multi-agent trajectory forecasting and planning"
+requires-python = ">=3.11"
+authors = [{name = "DiffuseDrive Contributors"}]
+license = {text = "MIT"}
+dependencies = [
+    "torch>=2.0.0",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+    "pyyaml>=6.0",
+    "tqdm>=4.65",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+    "tensorflow>=2.12; platform_system != 'Darwin' or python_version < '3.12'",
+    "pandas>=1.5",
+    "pyarrow>=12.0",
+]
+
+[project.scripts]
+dd-train = "diffusedrive.train.cli:main"
+dd-eval = "diffusedrive.eval.cli:main"
+dd-plan = "diffusedrive.plan.cli:main"
+dd-report = "diffusedrive.report:main"
+
+[tool.scikit-build]
+cmake.minimum-version = "3.24"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "-v"
+
+[tool.coverage.run]
+branch = true
+source = ["diffusedrive"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]

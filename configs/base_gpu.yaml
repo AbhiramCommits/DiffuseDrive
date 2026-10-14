@@ -1,0 +1,49 @@
+# Base config for GPU multi-GPU training
+data:
+  source: synth
+  num_train_scenes: 10000
+  num_val_scenes: 2000
+  batch_size: 32
+  num_workers: 4
+  T_hist: 11
+  T_fut: 80
+  synthetic_seed: 42
+
+model:
+  model: diffusion
+  objective: ddpm
+  d_model: 256
+  num_layers: 6
+  num_heads: 8
+  ff_dim: 1024
+  dropout: 0.1
+  polyline_dim: 128
+  encoder_layers: 4
+  max_agents: 32
+  max_polylines: 256
+  max_polyline_points: 30
+  diffusion_steps: 1000
+
+train:
+  num_epochs: 10
+  learning_rate: 1e-3
+  weight_decay: 1e-4
+  warmup_steps: 1000
+  gradient_clip_norm: 1.0
+  log_every: 50
+  val_every: 500
+  checkpoint_every: 2000
+  amp: true
+  amp_dtype: bfloat16
+  ema_decay: 0.999
+  seed: 42
+
+planner:
+  planner: diffusion
+  num_samples: 6
+  sampler: ddim
+  sampler_steps: 20
+  planning_horizon: 10
+  replan_freq: 1
+
+output_dir: runs/base_gpu
