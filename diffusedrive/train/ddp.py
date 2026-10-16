@@ -12,8 +12,6 @@ def init_distributed():
     if "RANK" in os.environ and "WORLD_SIZE" in os.environ:
         rank = int(os.environ["RANK"])
         world_size = int(os.environ["WORLD_SIZE"])
-        master_addr = os.environ.get("MASTER_ADDR", "localhost")
-        master_port = os.environ.get("MASTER_PORT", "29500")
 
         dist.init_process_group(
             backend="nccl" if torch.cuda.is_available() else "gloo",

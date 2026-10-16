@@ -260,7 +260,6 @@ class DiffusionModel(nn.Module):
                 noise_pred = self.denoiser(x_t, t, scene_cond, agent_context, agent_mask)
 
             # DDPM step
-            alpha = self.schedule.alphas[i]
             alpha_prev = self.schedule.alphas[i - step_size]
 
             x_0_pred = (x_t - torch.sqrt(1 - self.schedule.alphas_cumprod[i]) * noise_pred) / torch.sqrt(self.schedule.alphas_cumprod[i])

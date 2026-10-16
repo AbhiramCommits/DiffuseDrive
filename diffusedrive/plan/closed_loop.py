@@ -1,8 +1,8 @@
 """Closed-loop planning evaluation."""
 
-
 import numpy as np
-import torch
+
+from diffusedrive.data.collate import collate_batch
 
 
 def run_episodes(
@@ -20,17 +20,11 @@ def run_episodes(
     jerk_sum = 0.0
 
     for i in range(min(n_episodes, len(dataset))):
-        sample = dataset[i]
+        # Batch of one, with the dtypes the models expect (long agent_type, bool masks)
+        sample = collate_batch([dataset[i]])
 
-        # Batch for model
-        for k in sample:
-            if isinstance(sample[k], np.ndarray):
-                sample[k] = torch.from_numpy(sample[k]).unsqueeze(0).float()
-            elif isinstance(sample[k], (int, np.integer)):
-                sample[k] = torch.tensor([sample[k]]).long()
-
-        ego_idx = sample["ego_index"].item()
-        gt_fut = sample["agent_fut"].numpy()[0, ego_idx]
+        ego_idx = int(sample["ego_index"][0])
+        gt_fut = sample["agent_fut"].numpy()[0]  # [A, T_fut, 2] (all agents)
 
         # Plan
         try:
@@ -42,14 +36,14 @@ def run_episodes(
                 sample["map_mask"],
                 ego_idx=ego_idx,
             )
-        except:
+        except Exception:
             collision_count += 1
             continue
 
         # Evaluate
         # Collision: check against GT other agents
-        for t in range(min(len(plan), gt_fut.shape[0])):
-            for a in range(sample["agent_fut"].shape[1]):
+        for t in range(min(len(plan), gt_fut.shape[1])):
+            for a in range(gt_fut.shape[0]):
                 if a != ego_idx:
                     other_pos = gt_fut[a, t, :2]
                     if np.linalg.norm(plan[t] - other_pos) < 1.0:

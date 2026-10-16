@@ -5,7 +5,7 @@ from typing import Any, Dict
 from torch.utils.data import Dataset
 
 try:
-    import tensorflow as tf
+    import tensorflow as tf  # noqa: F401 - availability check
     TENSORFLOW_AVAILABLE = True
 except ImportError:
     TENSORFLOW_AVAILABLE = False

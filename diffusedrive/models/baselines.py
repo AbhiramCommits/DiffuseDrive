@@ -127,10 +127,6 @@ class MultiModalRegressor(nn.Module):
             agent_hist, agent_hist_mask, agent_type, map_polylines, map_mask
         )
 
-        # Get mode logits
-        logits = self.mode_logits(agent_context)  # [B, A, num_modes]
-        mode_probs = F.softmax(logits, dim=-1)
-
         # Get K trajectory predictions
         traj_preds = []
         for head in self.trajectory_heads:

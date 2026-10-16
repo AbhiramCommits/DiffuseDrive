@@ -5,8 +5,8 @@ from typing import Any, Dict
 from torch.utils.data import Dataset
 
 try:
-    import pandas as pd
-    import pyarrow.parquet as pq
+    import pandas as pd  # noqa: F401 - availability check
+    import pyarrow.parquet as pq  # noqa: F401 - availability check
     PYARROW_AVAILABLE = True
 except ImportError:
     PYARROW_AVAILABLE = False
