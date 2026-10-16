@@ -1,8 +1,8 @@
 """Closed-loop planning evaluation."""
 
+
 import numpy as np
 import torch
-from typing import Tuple
 
 
 def run_episodes(

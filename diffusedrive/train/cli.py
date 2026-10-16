@@ -1,9 +1,9 @@
 """Training CLI entrypoint."""
 
 import argparse
-import json
 import logging
 from pathlib import Path
+
 import torch
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
@@ -12,15 +12,16 @@ from diffusedrive.config import load_config
 from diffusedrive.data import build_dataset, collate_batch
 from diffusedrive.models import build_model
 from diffusedrive.utils.seed import set_seed
+
+from .ddp import init_distributed, is_main_process
 from .loop import (
-    train_epoch,
-    validate,
-    save_checkpoint,
-    load_checkpoint,
     ExponentialMovingAverage,
     create_cosine_schedule_with_warmup,
+    load_checkpoint,
+    save_checkpoint,
+    train_epoch,
+    validate,
 )
-from .ddp import init_distributed, is_main_process, get_rank
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

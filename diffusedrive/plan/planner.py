@@ -1,8 +1,9 @@
 """Sampling-based and baseline planners."""
 
+
 import numpy as np
 import torch
-from typing import Tuple
+
 from .cost import total_cost
 
 

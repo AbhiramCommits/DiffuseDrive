@@ -1,15 +1,14 @@
 """Evaluation harness."""
 
-import json
-import torch
 import numpy as np
-from pathlib import Path
+import torch
 from tqdm import tqdm
 
 from diffusedrive.config import load_config
 from diffusedrive.data import build_dataset, collate_batch
 from diffusedrive.models import build_model
-from .metrics import compute_metrics, bootstrap_ci
+
+from .metrics import bootstrap_ci, compute_metrics
 
 
 def evaluate(

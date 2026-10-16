@@ -1,8 +1,9 @@
 """Visualization utilities."""
 
-import numpy as np
-import matplotlib.pyplot as plt
 from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def plot_scene(samples: np.ndarray, gt: np.ndarray, map_polylines: np.ndarray,

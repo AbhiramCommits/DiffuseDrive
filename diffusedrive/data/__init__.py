@@ -1,10 +1,11 @@
 """Data loading and dataset building."""
 
 from torch.utils.data import Dataset
-from .synth import SynthDriveDataset
-from .womd import WOMDScenarioDataset
+
 from .av2 import Argoverse2Dataset
 from .collate import collate_batch
+from .synth import SynthDriveDataset
+from .womd import WOMDScenarioDataset
 
 
 def build_dataset(cfg) -> Dataset:

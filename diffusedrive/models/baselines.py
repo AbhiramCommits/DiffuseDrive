@@ -1,9 +1,11 @@
 """Baseline forecasters: BC and mixture models."""
 
+from typing import Tuple
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import Tuple
+
 from .encoder import SceneEncoder
 from .layers import MLP
 

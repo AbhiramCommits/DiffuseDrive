@@ -1,9 +1,10 @@
 """Distributed training helpers."""
 
 import os
+
 import torch
 import torch.distributed as dist
-from torch.utils.data import DistributedSampler, DataLoader
+from torch.utils.data import DistributedSampler
 
 
 def init_distributed():
@@ -16,7 +17,7 @@ def init_distributed():
 
         dist.init_process_group(
             backend="nccl" if torch.cuda.is_available() else "gloo",
-            init_method=f"env://",
+            init_method="env://",
             rank=rank,
             world_size=world_size,
         )

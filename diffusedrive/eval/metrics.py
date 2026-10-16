@@ -1,8 +1,9 @@
 """Forecasting metrics."""
 
+from typing import Tuple
+
 import numpy as np
 from scipy.spatial.distance import cdist
-from typing import Tuple
 
 
 def minADE_k(pred: np.ndarray, gt: np.ndarray, k: int = 6) -> float:

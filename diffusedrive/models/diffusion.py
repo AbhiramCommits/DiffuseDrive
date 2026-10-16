@@ -1,11 +1,13 @@
 """Diffusion model: schedule, denoising, sampling."""
 
 import math
+from typing import Optional, Tuple
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import Tuple, Optional
-from .layers import sinusoidal_embedding, RMSNorm, MultiHeadAttention, MLP, FiLMBlock
+
+from .layers import MLP, FiLMBlock, MultiHeadAttention, RMSNorm, sinusoidal_embedding
 
 
 def cosine_beta_schedule(timesteps: int, s: float = 0.008) -> torch.Tensor:

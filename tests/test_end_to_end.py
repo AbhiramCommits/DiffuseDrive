@@ -1,18 +1,17 @@
 """End-to-end integration test."""
 
-import pytest
-import torch
 import json
-from pathlib import Path
 import tempfile
+from pathlib import Path
+
+import torch
 
 from diffusedrive.config import load_config
 from diffusedrive.data import build_dataset, collate_batch
 from diffusedrive.models import build_model
-from diffusedrive.train.loop import train_epoch, validate, save_checkpoint, load_checkpoint, ExponentialMovingAverage
-from diffusedrive.eval.harness import evaluate
 from diffusedrive.plan.planner import SamplingPlanner
 from diffusedrive.report import generate_report
+from diffusedrive.train.loop import ExponentialMovingAverage, load_checkpoint, save_checkpoint
 
 
 def test_end_to_end():

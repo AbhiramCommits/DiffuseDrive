@@ -1,8 +1,8 @@
 """Argoverse 2 motion forecasting loader with graceful degradation."""
 
-import numpy as np
+from typing import Any, Dict
+
 from torch.utils.data import Dataset
-from typing import Dict, Any, Optional
 
 try:
     import pandas as pd
