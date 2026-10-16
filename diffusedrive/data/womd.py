@@ -1,14 +1,15 @@
 """WOMD scenario loader with graceful degradation."""
 
+import importlib.util
 from typing import Any, Dict
 
 from torch.utils.data import Dataset
 
-try:
-    import tensorflow as tf  # noqa: F401 - availability check
-    TENSORFLOW_AVAILABLE = True
-except ImportError:
-    TENSORFLOW_AVAILABLE = False
+# Only check availability here; do NOT import tensorflow at module import time.
+# `diffusedrive.data` is imported by everything, and loading TensorFlow into the
+# same process before torch imports triton (e.g. via torch._dynamo, which
+# torch.optim triggers) segfaults in triton's native extension.
+TENSORFLOW_AVAILABLE = importlib.util.find_spec("tensorflow") is not None
 
 
 class WOMDScenarioDataset(Dataset):
