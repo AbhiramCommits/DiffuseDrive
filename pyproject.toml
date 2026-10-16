@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=68.0", "wheel", "scikit-build-core"]
-build-backend = "scikit_build_core.build"
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "diffusedrive"
@@ -35,8 +35,8 @@ dd-eval = "diffusedrive.eval.cli:main"
 dd-plan = "diffusedrive.plan.cli:main"
 dd-report = "diffusedrive.report:main"
 
-[tool.scikit-build]
-cmake.minimum-version = "3.24"
+[tool.setuptools.packages.find]
+include = ["diffusedrive*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
