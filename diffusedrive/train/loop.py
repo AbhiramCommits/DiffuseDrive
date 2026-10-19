@@ -1,16 +1,15 @@
 """Training loop with AMP, checkpointing, resume."""
 
 import json
-import math
+import logging
 from pathlib import Path
 from typing import Optional, Tuple
+
 import torch
 import torch.nn as nn
-from torch.optim import AdamW
-from torch.optim.lr_scheduler import CosineAnnealingLR, LambdaLR
-from torch.utils.data import DataLoader, DistributedSampler
+from torch.optim.lr_scheduler import LambdaLR
+from torch.utils.data import DataLoader
 from tqdm import tqdm
-import logging
 
 logger = logging.getLogger(__name__)
 

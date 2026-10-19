@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 """Generate test fixtures for unit tests."""
 
-import os
-import numpy as np
-from pathlib import Path
-
 # Add parent to path
 import sys
+from pathlib import Path
+
+import numpy as np
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from diffusedrive.data.synth import SynthDriveDataset
 from diffusedrive.data.schema import validate_sample
+from diffusedrive.data.synth import SynthDriveDataset
 
 
 def main():

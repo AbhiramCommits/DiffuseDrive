@@ -1,9 +1,10 @@
 """Synthetic scenario generator with lane geometry and IDM dynamics."""
 
+from typing import Any, Dict
+
 import numpy as np
-import torch
 from torch.utils.data import Dataset
-from typing import Dict, Any
+
 from .schema import validate_sample
 
 

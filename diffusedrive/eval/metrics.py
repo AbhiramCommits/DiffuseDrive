@@ -1,14 +1,15 @@
 """Forecasting metrics."""
 
+from typing import Tuple
+
 import numpy as np
 from scipy.spatial.distance import cdist
-from typing import Tuple
 
 
 def minADE_k(pred: np.ndarray, gt: np.ndarray, k: int = 6) -> float:
     """Minimum Average Displacement Error over K samples. pred: [K, A, T, 2], gt: [A, T, 2]"""
     pred = pred[:k]
-    ade = np.linalg.norm(pred - gt[None], axis=(2, 3)).mean(axis=2)  # [K, A]
+    ade = np.linalg.norm(pred - gt[None], axis=-1).mean(axis=2)  # [K, A]
     return ade.min(axis=0).mean()
 
 
@@ -61,7 +62,7 @@ def nll_kde(pred: np.ndarray, gt: np.ndarray, bandwidth: float = 0.5) -> float:
         kde = gaussian_kde(pred_flat.T, bw_method=bandwidth)
         nll = -np.log(kde(gt_flat.T) + 1e-6).mean()
         return nll
-    except:
+    except Exception:
         return np.inf
 
 
@@ -72,7 +73,7 @@ def compute_metrics(pred: np.ndarray, gt: np.ndarray, K: int = 6) -> dict:
         "minFDE_k": minFDE_k(pred, gt, K),
         "miss_rate": miss_rate(pred, gt, k=K),
         "jointADE": jointADE(pred, gt, K),
-        "collision_rate": collision_rate(pred, K),
+        "collision_rate": collision_rate(pred[:K]),
         "nll_kde": nll_kde(pred, gt),
     }
 

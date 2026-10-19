@@ -2,14 +2,16 @@
 
 import argparse
 import json
-import torch
 from pathlib import Path
+
+import torch
 
 from diffusedrive.config import load_config
 from diffusedrive.data import build_dataset
 from diffusedrive.models import build_model
-from .planner import SamplingPlanner, BCPlanner, ConstantVelocityPlanner
+
 from .closed_loop import run_episodes
+from .planner import BCPlanner, ConstantVelocityPlanner, SamplingPlanner
 
 
 def main():

@@ -1,11 +1,13 @@
 """Diffusion model: schedule, denoising, sampling."""
 
 import math
+from typing import Optional, Tuple
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import Tuple, Optional
-from .layers import sinusoidal_embedding, RMSNorm, MultiHeadAttention, MLP, FiLMBlock
+
+from .layers import MLP, FiLMBlock, MultiHeadAttention, RMSNorm, sinusoidal_embedding
 
 
 def cosine_beta_schedule(timesteps: int, s: float = 0.008) -> torch.Tensor:
@@ -258,7 +260,6 @@ class DiffusionModel(nn.Module):
                 noise_pred = self.denoiser(x_t, t, scene_cond, agent_context, agent_mask)
 
             # DDPM step
-            alpha = self.schedule.alphas[i]
             alpha_prev = self.schedule.alphas[i - step_size]
 
             x_0_pred = (x_t - torch.sqrt(1 - self.schedule.alphas_cumprod[i]) * noise_pred) / torch.sqrt(self.schedule.alphas_cumprod[i])

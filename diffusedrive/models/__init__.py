@@ -1,14 +1,15 @@
 """Model building and selection."""
 
 import torch.nn as nn
-from .encoder import SceneEncoder
-from .diffusion import DiffusionModel, DenoiserTransformer
+
 from .baselines import BehaviorCloningMLP, MultiModalRegressor
+from .diffusion import DenoiserTransformer, DiffusionModel
+from .encoder import SceneEncoder
 
 
 def build_model(cfg) -> nn.Module:
     """Build model based on config."""
-    
+
     # Build encoder
     encoder = SceneEncoder(
         d_agent=5,
@@ -20,7 +21,7 @@ def build_model(cfg) -> nn.Module:
         max_agents=cfg.model.max_agents,
         max_polylines=cfg.model.max_polylines,
     )
-    
+
     if cfg.model.model == "diffusion":
         # Build denoiser
         denoiser = DenoiserTransformer(
@@ -33,14 +34,14 @@ def build_model(cfg) -> nn.Module:
             T_fut=cfg.data.T_fut,
             objective=cfg.model.objective,
         )
-        
+
         model = DiffusionModel(
             encoder=encoder,
             denoiser=denoiser,
             timesteps=cfg.model.diffusion_steps,
             objective=cfg.model.objective,
         )
-    
+
     elif cfg.model.model == "bc":
         model = BehaviorCloningMLP(
             encoder=encoder,
@@ -48,7 +49,7 @@ def build_model(cfg) -> nn.Module:
             T_fut=cfg.data.T_fut,
             max_agents=cfg.model.max_agents,
         )
-    
+
     elif cfg.model.model == "mixture":
         model = MultiModalRegressor(
             encoder=encoder,
@@ -57,10 +58,10 @@ def build_model(cfg) -> nn.Module:
             max_agents=cfg.model.max_agents,
             num_modes=6,
         )
-    
+
     else:
         raise ValueError(f"Unknown model: {cfg.model.model}")
-    
+
     return model
 
 

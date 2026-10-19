@@ -1,8 +1,9 @@
 """Canonical data schema and validation."""
 
-from typing import Dict, Any, Optional
-import torch
+from typing import Any, Dict
+
 import numpy as np
+import torch
 
 
 def validate_sample(sample: Dict[str, Any], T_hist: int = 11, T_fut: int = 80) -> None:

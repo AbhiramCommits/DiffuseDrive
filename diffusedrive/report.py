@@ -2,7 +2,6 @@
 
 import json
 from pathlib import Path
-from typing import Dict, List
 
 
 def generate_report(results_dir: Path = Path("results"), output_path: Path = Path("results/RESULTS.md")):

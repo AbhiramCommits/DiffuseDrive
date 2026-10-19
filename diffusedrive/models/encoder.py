@@ -1,9 +1,11 @@
 """Scene encoder: polyline encoding and agent-map interaction."""
 
+from typing import Tuple
+
 import torch
 import torch.nn as nn
-from typing import Tuple
-from .layers import MLP, RMSNorm, MultiHeadAttention, sinusoidal_embedding
+
+from .layers import MLP, MultiHeadAttention, RMSNorm
 
 
 class PolylineEncoder(nn.Module):

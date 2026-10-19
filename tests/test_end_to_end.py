@@ -1,18 +1,17 @@
 """End-to-end integration test."""
 
-import pytest
-import torch
 import json
-from pathlib import Path
 import tempfile
+from pathlib import Path
+
+import torch
 
 from diffusedrive.config import load_config
 from diffusedrive.data import build_dataset, collate_batch
 from diffusedrive.models import build_model
-from diffusedrive.train.loop import train_epoch, validate, save_checkpoint, load_checkpoint, ExponentialMovingAverage
-from diffusedrive.eval.harness import evaluate
 from diffusedrive.plan.planner import SamplingPlanner
 from diffusedrive.report import generate_report
+from diffusedrive.train.loop import ExponentialMovingAverage, load_checkpoint, save_checkpoint
 
 
 def test_end_to_end():
@@ -98,26 +97,16 @@ def test_end_to_end():
 
         # Plan
         planner = SamplingPlanner(model, planning_horizon=5)
-        sample = dataset[0]
-        for k in list(sample.keys()):
-            if isinstance(sample[k], str):
-                continue
-            elif isinstance(sample[k], (int, float)):
-                sample[k] = torch.tensor(sample[k]).unsqueeze(0)
-            else:
-                sample[k] = torch.from_numpy(sample[k]).unsqueeze(0).float()
-
-        try:
-            plan = planner.plan(
-                sample["agent_hist"],
-                sample["agent_hist_mask"],
-                sample["agent_type"],
-                sample["map_polylines"],
-                sample["map_mask"],
-            )
-            assert plan.shape == (5, 2), f"Expected (5, 2), got {plan.shape}"
-        except Exception as e:
-            print(f"Planning error (expected on random model): {e}")
+        batch = collate_batch([dataset[0]])
+        plan = planner.plan(
+            batch["agent_hist"],
+            batch["agent_hist_mask"],
+            batch["agent_type"],
+            batch["map_polylines"],
+            batch["map_mask"],
+            ego_idx=int(batch["ego_index"][0]),
+        )
+        assert plan.shape == (5, 2), f"Expected (5, 2), got {plan.shape}"
 
         # Generate report
         results_dir = tmpdir / "results"

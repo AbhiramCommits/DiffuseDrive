@@ -1,9 +1,11 @@
 """Baseline forecasters: BC and mixture models."""
 
+from typing import Tuple
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import Tuple
+
 from .encoder import SceneEncoder
 from .layers import MLP
 
@@ -124,10 +126,6 @@ class MultiModalRegressor(nn.Module):
         _, agent_context = self.encoder(
             agent_hist, agent_hist_mask, agent_type, map_polylines, map_mask
         )
-
-        # Get mode logits
-        logits = self.mode_logits(agent_context)  # [B, A, num_modes]
-        mode_probs = F.softmax(logits, dim=-1)
 
         # Get K trajectory predictions
         traj_preds = []

@@ -1,8 +1,8 @@
 """Batching and collation utilities."""
 
+from typing import Any, Dict, List
+
 import torch
-import numpy as np
-from typing import Dict, Any, List
 
 
 def collate_batch(batch: List[Dict[str, Any]]) -> Dict[str, torch.Tensor]:

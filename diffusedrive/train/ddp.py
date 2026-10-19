@@ -1,9 +1,10 @@
 """Distributed training helpers."""
 
 import os
+
 import torch
 import torch.distributed as dist
-from torch.utils.data import DistributedSampler, DataLoader
+from torch.utils.data import DistributedSampler
 
 
 def init_distributed():
@@ -11,12 +12,10 @@ def init_distributed():
     if "RANK" in os.environ and "WORLD_SIZE" in os.environ:
         rank = int(os.environ["RANK"])
         world_size = int(os.environ["WORLD_SIZE"])
-        master_addr = os.environ.get("MASTER_ADDR", "localhost")
-        master_port = os.environ.get("MASTER_PORT", "29500")
 
         dist.init_process_group(
             backend="nccl" if torch.cuda.is_available() else "gloo",
-            init_method=f"env://",
+            init_method="env://",
             rank=rank,
             world_size=world_size,
         )
